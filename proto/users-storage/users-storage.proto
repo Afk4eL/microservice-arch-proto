@@ -1,0 +1,42 @@
+syntax = "proto3";
+
+package users_storage;
+
+option go_package = "microservice-arch/contracts/gen;users_storage_contract";
+
+service UsersStorage {
+    rpc GetUser (GetUserRequest) returns (GetUserResponse);
+}
+
+message User {
+    string uuid = 1;
+    UserContactInfo contactInfo = 2;
+    UserPersonalInfo personalInfo = 3;
+}
+
+message UserContactInfo {
+    string email = 1;
+    string phone_number = 2;
+}
+
+message UserPersonalInfo {
+    string name = 1;
+}
+
+message UserMetaInfo {
+    uint64 created_at = 1;
+    uint64 updated_at = 2;
+    uint64 deleted_at = 3;
+}
+
+message GetUserResponse {
+    User user = 1;
+}
+
+message GetUserRequest {
+    oneof search_fields {
+        string uuid = 1;
+        string email = 2;
+    }
+}
+
