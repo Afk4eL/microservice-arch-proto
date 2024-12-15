@@ -10,13 +10,14 @@ tasks:
       - git add .
       - git commit -m '{{.MSG}}'
       - git tag -a '{{.TAG}}' -m '{{.MSG}}'
-      - git push -u origin master
+      - git push -u origin main
       - git push origin --tags
   
   generate-tag:
     aliases:
       - tag
+    desc: "Create tag on github"
     cmds:
       - git tag -a '{{.TAG}}' -m '{{.MSG}}'
-      - git push -u origin master
+      - git push -u origin main
       - git push origin --tags
