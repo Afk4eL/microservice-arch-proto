@@ -19,7 +19,8 @@ import (
 const _ = grpc.SupportPackageIsVersion9
 
 const (
-	UsersStorage_GetUser_FullMethodName = "/users_storage.UsersStorage/GetUser"
+	UsersStorage_GetUser_FullMethodName    = "/users_storage.UsersStorage/GetUser"
+	UsersStorage_CreateUser_FullMethodName = "/users_storage.UsersStorage/CreateUser"
 )
 
 // UsersStorageClient is the client API for UsersStorage service.
@@ -27,6 +28,7 @@ const (
 // For semantics around ctx use and closing/ending streaming RPCs, please refer to https://pkg.go.dev/google.golang.org/grpc/?tab=doc#ClientConn.NewStream.
 type UsersStorageClient interface {
 	GetUser(ctx context.Context, in *GetUserRequest, opts ...grpc.CallOption) (*GetUserResponse, error)
+	CreateUser(ctx context.Context, in *CreateUserRequest, opts ...grpc.CallOption) (*CreateUserResponse, error)
 }
 
 type usersStorageClient struct {
@@ -47,11 +49,22 @@ func (c *usersStorageClient) GetUser(ctx context.Context, in *GetUserRequest, op
 	return out, nil
 }
 
+func (c *usersStorageClient) CreateUser(ctx context.Context, in *CreateUserRequest, opts ...grpc.CallOption) (*CreateUserResponse, error) {
+	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
+	out := new(CreateUserResponse)
+	err := c.cc.Invoke(ctx, UsersStorage_CreateUser_FullMethodName, in, out, cOpts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
 // UsersStorageServer is the server API for UsersStorage service.
 // All implementations must embed UnimplementedUsersStorageServer
 // for forward compatibility.
 type UsersStorageServer interface {
 	GetUser(context.Context, *GetUserRequest) (*GetUserResponse, error)
+	CreateUser(context.Context, *CreateUserRequest) (*CreateUserResponse, error)
 	mustEmbedUnimplementedUsersStorageServer()
 }
 
@@ -64,6 +77,9 @@ type UnimplementedUsersStorageServer struct{}
 
 func (UnimplementedUsersStorageServer) GetUser(context.Context, *GetUserRequest) (*GetUserResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method GetUser not implemented")
+}
+func (UnimplementedUsersStorageServer) CreateUser(context.Context, *CreateUserRequest) (*CreateUserResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method CreateUser not implemented")
 }
 func (UnimplementedUsersStorageServer) mustEmbedUnimplementedUsersStorageServer() {}
 func (UnimplementedUsersStorageServer) testEmbeddedByValue()                      {}
@@ -104,6 +120,24 @@ func _UsersStorage_GetUser_Handler(srv interface{}, ctx context.Context, dec fun
 	return interceptor(ctx, in, info, handler)
 }
 
+func _UsersStorage_CreateUser_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(CreateUserRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(UsersStorageServer).CreateUser(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: UsersStorage_CreateUser_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(UsersStorageServer).CreateUser(ctx, req.(*CreateUserRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
 // UsersStorage_ServiceDesc is the grpc.ServiceDesc for UsersStorage service.
 // It's only intended for direct use with grpc.RegisterService,
 // and not to be introspected or modified (even as a copy)
@@ -114,6 +148,10 @@ var UsersStorage_ServiceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "GetUser",
 			Handler:    _UsersStorage_GetUser_Handler,
+		},
+		{
+			MethodName: "CreateUser",
+			Handler:    _UsersStorage_CreateUser_Handler,
 		},
 	},
 	Streams:  []grpc.StreamDesc{},

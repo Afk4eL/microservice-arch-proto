@@ -10,7 +10,7 @@ tasks:
       - git add .
       - git commit -m '{{.MSG}}'
       - git tag -a '{{.TAG}}' -m '{{.MSG}}'
-      - git push -u origin main
+      - git push -u origin {{.BR}}
       - git push origin --tags
   
   generate-tag:
@@ -19,5 +19,5 @@ tasks:
     desc: "Create tag on github"
     cmds:
       - git tag -a '{{.TAG}}' -m '{{.MSG}}'
-      - git push -u origin main
+      - git push -u origin '{{.BR}}'
       - git push origin --tags
