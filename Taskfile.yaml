@@ -6,7 +6,7 @@ tasks:
       - full-gen
     desc: "Generate code from proto files and push them on github"
     cmds:
-      - protoc -I proto proto/users-storage/*.proto --go_out=gen/go --go_opt=paths=source_relative --go-grpc_out=gen/go --go-grpc_opt=paths=source_relative
+      - protoc -I proto proto/{{.PROTO}}/*.proto --go_out=gen/go --go_opt=paths=source_relative --go-grpc_out=gen/go --go-grpc_opt=paths=source_relative
       - git add .
       - git commit -m '{{.MSG}}'
       - git tag -a '{{.TAG}}' -m '{{.MSG}}'

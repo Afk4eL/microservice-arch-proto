@@ -35,19 +35,23 @@ message UserMetaInfo {
 message GetUserRequest {
     oneof search_fields {
         string uuid = 1;
-        string email = 2;
+        string login = 2;
     }
 }
 
 message GetUserResponse {
-    User user = 1;
+    string uuid = 1;
+    string login = 2;
+    UserPersonalInfo personalInfo = 3;
 }
 //GET
 
 //CREATE
 message CreateUserRequest {
-    UserPersonalInfo personalInfo = 1;
-    UserContactInfo contactInfo = 2;
+    string login = 1;
+    UserPersonalInfo personalInfo = 2;
+    UserContactInfo contactInfo = 3;
+    string passwordHash = 4;
 }
 
 message CreateUserResponse {

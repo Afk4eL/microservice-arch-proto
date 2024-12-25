@@ -1,0 +1,70 @@
+syntax = "proto3";
+
+package sso_service;
+
+option go_package = "microservice-arch/contracts/gen;sso_service_contract";
+
+service SsoService {
+   rpc Login(LoginRequest) returns (LoginResponse);
+   rpc Register(LoginRequest) returns (RegisterResponse);
+   rpc SessionCheck(SessionCheckRequest) returns (SessionCheckResponse);
+}
+
+message User {
+    string uuid = 1;
+    UserContactInfo contactInfo = 2;
+    UserPersonalInfo personalInfo = 3;
+    UserMetaInfo metaInfo = 4;
+}
+
+message UserPersonalInfo {
+    string name = 1;
+}
+
+message UserContactInfo {
+    string email = 1;
+    string phone_number = 2;
+}
+
+message UserMetaInfo {
+    uint64 created_at = 1;
+    uint64 updated_at = 2;
+    uint64 deleted_at = 3;
+}
+
+//LOGIN
+message LoginRequest {
+    oneof search_fields {
+        string email = 1;
+        string login = 2;
+    }
+    string password = 3;
+}
+
+message LoginResponse {
+    string sessionId = 1;
+}
+//LOGIN
+
+//REGISTER
+message RegisterRequest {
+    string login = 1;
+    UserPersonalInfo personalInfo = 2;
+    UserContactInfo contactInfo = 3;
+    string password = 4;
+}
+
+message RegisterResponse {
+    string sessionId = 1;
+}
+//REGISTER
+
+//SESSION_CHECK
+message SessionCheckRequest {
+    string uuid = 1;
+}
+
+message SessionCheckResponse {
+    string bool = 1;
+}
+//SESSION_CHECK
