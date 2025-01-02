@@ -18,6 +18,7 @@ message User {
 
 message UserPersonalInfo {
     string name = 1;
+    string birthDate = 2;
 }
 
 message UserContactInfo {
